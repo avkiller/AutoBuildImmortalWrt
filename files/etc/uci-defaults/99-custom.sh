@@ -129,4 +129,9 @@ FILE_PATH="/etc/openwrt_release"
 NEW_DESCRIPTION="Compiled by avkiller"
 sed -i "s/DISTRIB_DESCRIPTION='[^']*'/DISTRIB_DESCRIPTION='$NEW_DESCRIPTION'/" "$FILE_PATH"
 
+# 修改默认源到国内镜像
+sed -e 's,https://downloads.immortalwrt.org,https://mirrors.cernet.edu.cn/immortalwrt,g' \
+    -e 's,https://mirrors.vsean.net/openwrt,https://mirrors.cernet.edu.cn/immortalwrt,g' \
+    -i.bak /etc/opkg/distfeeds.conf
+
 exit 0
