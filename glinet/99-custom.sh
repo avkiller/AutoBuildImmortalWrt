@@ -10,7 +10,7 @@ uci set "dhcp.@domain[-1].name=time.android.com"
 uci set "dhcp.@domain[-1].ip=203.107.6.88"
 
 # 检查配置文件是否存在
-SETTINGS_FILE="/etc/config/pppoe-settings"
+SETTINGS_FILE="/etc/pppoe-settings"
 if [ ! -f "$SETTINGS_FILE" ]; then
     echo "PPPoE settings file not found. Skipping." >> $LOGFILE
 else
