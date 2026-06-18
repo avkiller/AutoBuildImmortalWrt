@@ -135,7 +135,8 @@ uci set ttyd.@ttyd[0].command='/bin/login -f root'
 uci commit ttyd
 # 设置所有网口可连接 SSH
 uci set dropbear.@dropbear[0].Interface=''
-uci commit
+# uci set dropbear.@dropbear[0].DirectInterface='lan'
+uci commit dropbear
 
 # 设置编译作者信息
 FILE_PATH="/etc/openwrt_release"
