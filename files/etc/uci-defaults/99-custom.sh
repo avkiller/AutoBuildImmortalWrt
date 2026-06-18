@@ -130,6 +130,9 @@ fi
 # 设置所有网口可访问网页终端
 uci delete ttyd.@ttyd[0].interface
 
+# 设置ttyd直接以root账号启动
+uci set ttyd.@ttyd[0].command='/bin/login -f root'
+uci commit ttyd
 # 设置所有网口可连接 SSH
 uci set dropbear.@dropbear[0].Interface=''
 uci commit
