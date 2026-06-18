@@ -23,6 +23,15 @@ EOF
 echo "cat pppoe-settings"
 cat /home/build/immortalwrt/files/etc/pppoe-settings
 
+# 创建自己编译的证书公钥
+cat << EOF > /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
+untrusted comment: public key e6089a2eccd37d83
+RWTmCJouzNN9g/PA9Z/1AUswM7rzSDRb1HgWuvVrI3F+Cdxkz4YhCtTk
+EOF
+
+echo "cat 公钥证书"
+cat /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
+
 if [ -z "$CUSTOM_PACKAGES" ]; then
   echo "⚪️ 未选择 任何第三方软件包"
 else
