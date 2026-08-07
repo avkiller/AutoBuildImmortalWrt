@@ -219,5 +219,20 @@ EOF
 else
     echo "未检测到 Docker，跳过防火墙配置。"
 fi
+# 1. 确保 BBR 内核模块已加载（如果固件已内置，此步可跳过）
+# 注意：如果模块未安装，modprobe 会失败，但不应影响脚本其他部分
+modprobe tcp_bbr 2>/dev/null
+
+# 2. 创建 BBR 的 sysctl 配置文件，确保持久化
+cat > /etc/sysctl.d/99-bbr.conf <<EOF
+net.core.default_qdisc=fq
+net.ipv4.tcp_congestion_control=bbr
+EOF
+
+# 3. 立即应用当前配置
+sysctl -p /etc/sysctl.d/99-bbr.conf >/dev/null 2>&1
+
+# 4. （可选）验证配置是否生效，可将结果重定向到日志文件以便排查
+sysctl net.ipv4.tcp_congestion_control > /root/bbr_check.log 2>&1
 
 exit 0
