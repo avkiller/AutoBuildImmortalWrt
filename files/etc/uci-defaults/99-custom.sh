@@ -224,13 +224,12 @@ fi
 modprobe tcp_bbr 2>/dev/null
 
 # 2. 创建 BBR 的 sysctl 配置文件，确保持久化
-cat > /etc/sysctl.d/99-bbr.conf <<EOF
-net.core.default_qdisc=fq
+cat > /etc/sysctl.d/12-bbr.conf <<EOF
 net.ipv4.tcp_congestion_control=bbr
 EOF
 
 # 3. 立即应用当前配置
-sysctl -p /etc/sysctl.d/99-bbr.conf >/dev/null 2>&1
+sysctl -p /etc/sysctl.d/12-bbr.conf >/dev/null 2>&1
 
 # 4. （可选）验证配置是否生效，可将结果重定向到日志文件以便排查
 sysctl net.ipv4.tcp_congestion_control > /root/bbr_check.log 2>&1
