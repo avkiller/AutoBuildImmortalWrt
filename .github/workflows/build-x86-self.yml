@@ -1,4 +1,4 @@
-name: Build 24.10.x x86-64
+name: Build avkiller 24.10.x x86-64 
 
 on:
   workflow_dispatch:
