@@ -34,10 +34,6 @@ echo "cat 公钥证书"
 cat /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
 ls -la /home/build/immortalwrt/files/etc/opkg/keys
 
-echo "关闭证书校验"
-echo "option check_signature 0" > /home/build/immortalwrt/opkg.conf
-cat /home/build/immortalwrt/opkg.conf
-cat 
 
 if [ -z "$CUSTOM_PACKAGES" ]; then
   echo "⚪️ 未选择 任何第三方软件包"
@@ -64,6 +60,15 @@ fi
 # 自定义三方源
 echo "src/gz avkiller_homeproxy https://homeproxy.avkiller.top" >> repositories.conf
 echo "src/gz avkiller_easytier https://easytier-app.avkiller.top" >> repositories.conf
+echo "关闭证书校验"
+if grep -q "^option check_signature" repositories.conf; then
+    # 如果存在，将其值修改为 0
+    sed -i 's/^option check_signature.*/option check_signature 0/' repositories.conf
+else
+    # 如果不存在，在文件末尾追加
+    echo "option check_signature 0" >> repositories.conf
+fi
+cat 
 
 # # 手工下载
 # curl -L -o Packages.gz \
@@ -78,7 +83,7 @@ echo "src/gz avkiller_easytier https://easytier-app.avkiller.top" >> repositorie
 
 # 输出调试信息
 echo "$(date '+%Y-%m-%d %H:%M:%S') - 开始构建固件..."
-echo "查看repositories.conf信息——————"
+echo "debug::查看repositories.conf信息——————"
 cat repositories.conf
 # 定义所需安装的包列表 下列插件你都可以自行删减
 PACKAGES=""
