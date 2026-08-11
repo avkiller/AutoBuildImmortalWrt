@@ -37,7 +37,7 @@ if [ -z "$CUSTOM_PACKAGES" ]; then
 else
   # 下载 run 文件仓库
   echo "🔄 正在同步第三方软件仓库 Cloning run file repo..."
-  git clone --depth=1 https://github.com/avkiller/ImmortalWrtStore.git /tmp/store-run-repo
+  git clone --depth=1 https://github.com/avkiller/PkgStore.git /tmp/store-run-repo
 
   # 拷贝 run/arm64 下所有 run 文件和ipk文件 到 extra-packages 目录
   mkdir -p /home/build/immortalwrt/extra-packages
@@ -54,6 +54,10 @@ else
   arch aarch64_cortex-a53 15' repositories.conf
 fi
 
+# 自定义三方源
+echo "src/gz avkiller_homeproxy https://homeproxy.avkiller.top" >> /home/build/immortalwrt/repositories.conf
+echo "src/gz avkiller_easytier https://easytier-app.avkiller.top" >> /home/build/immortalwrt/repositories.conf
+
 
 # 输出调试信息
 echo "$(date '+%Y-%m-%d %H:%M:%S') - 开始构建固件..."
@@ -66,9 +70,16 @@ PACKAGES="$PACKAGES curl"
 PACKAGES="$PACKAGES luci-i18n-diskman-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-package-manager-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-firewall-zh-cn"
-PACKAGES="$PACKAGES luci-theme-argon"
-PACKAGES="$PACKAGES luci-app-argon-config"
-PACKAGES="$PACKAGES luci-i18n-argon-config-zh-cn"
+# PACKAGES="$PACKAGES luci-theme-argon"
+# PACKAGES="$PACKAGES luci-app-argon-config"
+# PACKAGES="$PACKAGES luci-i18n-argon-config-zh-cn"
+PACKAGES="$PACKAGES kmod-tcp-bbr"
+PACKAGES="$PACKAGES ss"
+PACKAGES="$PACKAGES luci-app-easytier"
+PACKAGES="$PACKAGES homeproxy-avkiller"
+PACKAGES="$PACKAGES dufs"
+PACKAGES="$PACKAGES luci-app-dufs"
+PACKAGES="$PACKAGES luci-i18n-ttyd-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-ttyd-zh-cn"
 # 判断是否需要编译 Docker 插件
 if [ "$INCLUDE_DOCKER" = "yes" ]; then
