@@ -93,20 +93,46 @@ elif [ "$count" -gt 1 ]; then
         echo "Updated br-lan ports: $lan_ifnames" >>$LOGFILE
     fi
 
+    # # LAN口设置静态IP
+    # uci set network.lan.proto='static'
+    # # 多网口设备 支持修改为别的管理后台地址 在Github Action 的UI上自行输入即可 
+    # uci set network.lan.netmask='255.255.255.0'
+    # # 设置路由器管理后台地址
+    # IP_VALUE_FILE="/etc/custom_router_ip.txt"
+    # if [ -f "$IP_VALUE_FILE" ]; then
+    #     CUSTOM_IP=$(cat "$IP_VALUE_FILE")
+    #     # 用户在UI上设置的路由器后台管理地址
+    #     uci set network.lan.ipaddr=$CUSTOM_IP
+    #     echo "custom router ip is $CUSTOM_IP" >> $LOGFILE
+    # else
+    #     uci set network.lan.ipaddr='192.168.100.1'
+    #     echo "default router ip is 192.168.100.1" >> $LOGFILE
+    # fi
+
     # LAN口设置静态IP
     uci set network.lan.proto='static'
-    # 多网口设备 支持修改为别的管理后台地址 在Github Action 的UI上自行输入即可 
     uci set network.lan.netmask='255.255.255.0'
+
     # 设置路由器管理后台地址
     IP_VALUE_FILE="/etc/custom_router_ip.txt"
+    DEFAULT_IP="192.168.100.1"
+
     if [ -f "$IP_VALUE_FILE" ]; then
-        CUSTOM_IP=$(cat "$IP_VALUE_FILE")
-        # 用户在UI上设置的路由器后台管理地址
-        uci set network.lan.ipaddr=$CUSTOM_IP
-        echo "custom router ip is $CUSTOM_IP" >> $LOGFILE
+        # 读取并清理IP地址（去除空格、换行符）
+        CUSTOM_IP=$(head -n 1 "$IP_VALUE_FILE" | tr -d ' \t\n\r')
+        
+        # 验证IP地址格式（简单检查）
+        if echo "$CUSTOM_IP" | grep -qE '^([0-9]{1,3}\.){3}[0-9]{1,3}$'; then
+            uci set network.lan.ipaddr="$CUSTOM_IP"
+            echo "custom router ip is $CUSTOM_IP" >> "$LOGFILE"
+        else
+            # IP格式无效，使用默认值并记录警告
+            echo "WARNING: Invalid IP format '$CUSTOM_IP', using default $DEFAULT_IP" >> "$LOGFILE"
+            uci set network.lan.ipaddr="$DEFAULT_IP"
+        fi
     else
-        uci set network.lan.ipaddr='192.168.100.1'
-        echo "default router ip is 192.168.100.1" >> $LOGFILE
+        uci set network.lan.ipaddr="$DEFAULT_IP"
+        echo "default router ip is $DEFAULT_IP" >> "$LOGFILE"
     fi
 
     # PPPoE设置
