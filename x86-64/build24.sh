@@ -49,6 +49,13 @@ else
   ls -lah /home/build/immortalwrt/packages/
 fi
 
+echo "DEBUG X86: 输出工作目录文件列表信息"
+echo "DEBUG X86: immortalwrt WORK目录下文件列表"
+ls -al /home/build/immortalwrt/
+echo "DEBUG X86: immortalwrt WORK目录子文件夹"
+find /home/build/immortalwrt/ -type d
+
+
 # 输出调试信息
 echo "$(date '+%Y-%m-%d %H:%M:%S') - 开始构建固件..."
 
