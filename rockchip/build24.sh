@@ -103,7 +103,6 @@ PACKAGES="$PACKAGES homeproxy-avkiller"
 PACKAGES="$PACKAGES dufs"
 PACKAGES="$PACKAGES luci-app-dufs"
 PACKAGES="$PACKAGES luci-i18n-ttyd-zh-cn"
-PACKAGES="$PACKAGES luci-i18n-ttyd-zh-cn"
 # 判断是否需要编译 Docker 插件
 if [ "$INCLUDE_DOCKER" = "yes" ]; then
     PACKAGES="$PACKAGES luci-i18n-dockerman-zh-cn"
