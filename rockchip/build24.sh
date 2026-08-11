@@ -23,6 +23,18 @@ EOF
 echo "cat pppoe-settings"
 cat /home/build/immortalwrt/files/etc/pppoe-settings
 
+# # 1. 下载源维护者的公钥
+# wget -O /tmp/homeproxy.pub https://homeproxy.avkiller.top/homeproxy-ipk-public.pub
+
+# # 2. 计算其指纹，并存入变量
+# FINGERPRINT=$(usign -F -p /tmp/homeproxy.pub | cut -d' ' -f2)
+
+# # 3. 将公钥复制到 ImageBuilder 的 files 目录，并以指纹重命名
+# cp /tmp/homeproxy.pub "/home/build/immortalwrt/files/etc/opkg/keys/$FINGERPRINT"
+
+# # 4. （可选）清理临时文件
+# rm /tmp/homeproxy.pub
+
 # 创建自己编译的证书公钥
 mkdir -p /home/build/immortalwrt/files/etc/opkg/keys
 cat << EOF > /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
@@ -32,6 +44,14 @@ EOF
 
 echo "cat 公钥证书"
 cat /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
+
+# 公钥命名的问题吗
+KEY_FILE="/home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83"
+if [ -f "$KEY_FILE" ]; then
+    FINGERPRINT=$(usign -F -p "$KEY_FILE" | cut -d' ' -f2)
+    cp "$KEY_FILE" "/home/build/immortalwrt/files/etc/opkg/keys/$FINGERPRINT"
+    echo "✅ 公钥已重命名为指纹: $FINGERPRINT"
+fi
 
 if [ -z "$CUSTOM_PACKAGES" ]; then
   echo "⚪️ 未选择 任何第三方软件包"
