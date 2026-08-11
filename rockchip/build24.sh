@@ -24,6 +24,7 @@ echo "cat pppoe-settings"
 cat /home/build/immortalwrt/files/etc/pppoe-settings
 
 # 创建自己编译的证书公钥
+mkdir -p /home/build/immortalwrt/files/etc/opkg/keys
 cat << EOF > /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
 untrusted comment: public key e6089a2eccd37d83
 RWTmCJouzNN9g/PA9Z/1AUswM7rzSDRb1HgWuvVrI3F+Cdxkz4YhCtTk
@@ -58,6 +59,16 @@ fi
 echo "src/gz avkiller_homeproxy https://homeproxy.avkiller.top" >> /home/build/immortalwrt/repositories.conf
 echo "src/gz avkiller_easytier https://easytier-app.avkiller.top" >> /home/build/immortalwrt/repositories.conf
 
+# 手工下载
+curl -L -o Packages.gz \
+  -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
+  https://easytier-app.avkiller.top/Packages.gz
+gunzip -c Packages.gz > Packages
+
+curl -L -o Packages.gz \
+  -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
+  https://homeproxy.avkiller.top/Packages.gz
+gunzip -c Packages.gz > Packages
 
 # 输出调试信息
 echo "$(date '+%Y-%m-%d %H:%M:%S') - 开始构建固件..."

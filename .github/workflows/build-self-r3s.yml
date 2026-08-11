@@ -156,6 +156,13 @@ jobs:
           else
             echo "❎ 未启用 luci-app-store"
           fi
+
+      - name: Test direct download
+        run: |
+          echo "=== Testing with wget ==="
+          wget --spider https://homeproxy.avkiller.top/homeproxy-avkiller_all.ipk || echo "wget failed"
+          echo "=== Testing with curl ==="
+          curl -I -L https://homeproxy.avkiller.top/homeproxy-avkiller_all.ipk
           
 
       - name: Building Rockchip ImmortalWrt
