@@ -51,6 +51,7 @@ else
   # 解压并拷贝ipk到packages目录
   sh shell/prepare-packages.sh
   sh shell/download-packages.sh
+  echo "查看当前packages列表"
   ls -lah /home/build/immortalwrt/packages/
   # 添加架构优先级信息
   sed -i '1i\
@@ -69,7 +70,6 @@ else
     # 如果不存在，在文件末尾追加
     echo "option check_signature 0" >> repositories.conf
 fi
-cat 
 
 # # 手工下载
 # curl -L -o Packages.gz \

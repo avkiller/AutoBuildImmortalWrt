@@ -11,7 +11,6 @@ TARGET_DIR="packages"
 
 # --- 初始化 ---
 # 清理并创建目标目录
-rm -rf "$TARGET_DIR"
 mkdir -p "$TARGET_DIR"
 
 # --- 定义需要下载的包列表 ---
@@ -22,6 +21,7 @@ https://homeproxy.avkiller.top/homeproxy-avkiller_all.ipk
 "
 # --- 下载函数 ---
 download_package() {
+    echo "download-packages.sh 执行开始"
     local url="$1"
     local filename="$2"
 
