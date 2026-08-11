@@ -164,6 +164,33 @@ uci set dropbear.@dropbear[0].Interface=''
 # uci set dropbear.@dropbear[0].DirectInterface='lan'
 uci commit dropbear
 
+# 添加一个nat 防火墙规则以解决在非动态伪装下部分app无法访问的问题
+CONFIG_NAME="app_user_srcnat"
+# 检查是否存在名为 'app_user_srcnat' 的 include 段
+if ! uci show firewall | grep -q "firewall.${CONFIG_NAME}="; then
+    echo "📝 配置段 '${CONFIG_NAME}' 不存在，正在添加..."
+    
+    # 创建一个新的匿名段
+    uci set firewall.@include[-1]="include"
+    # 设置参数
+    uci set firewall.@include[-1].type="nftables"
+    uci set firewall.@include[-1].path="/etc/firewall.user.nft"
+    uci set firewall.@include[-1].enabled="1"
+    # 重命名为目标名称
+    uci rename firewall.@include[-1]="${CONFIG_NAME}"
+    
+    # 提交更改
+    uci commit firewall
+    echo "✅ 配置段 '${CONFIG_NAME}' 已成功添加。"
+else
+    echo "⏭️  配置段 '${CONFIG_NAME}' 已存在，跳过添加。"
+fi
+
+
+# 修改默认的主机名
+uci set system.@system[0].hostname='Netgate'
+# 2. 提交更改
+uci commit system
 # 设置编译作者信息
 FILE_PATH="/etc/openwrt_release"
 NEW_DESCRIPTION="Packaged by avkiller"

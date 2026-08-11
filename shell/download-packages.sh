@@ -18,6 +18,10 @@ mkdir -p "$TARGET_DIR"
 # 注意：如果目标文件名留空，将使用 URL 中的原始文件名
 packages_to_download="
 https://homeproxy.avkiller.top/homeproxy-avkiller_all.ipk
+https://easytier-app.avkiller.top/easytier_main_aarch64_generic.ipk
+https://easytier-app.avkiller.top/easytier_noweb_aarch64_generic.ipk
+https://easytier-app.avkiller.top/luci-app-easytier_all.ipk
+https://easytier-app.avkiller.top/luci-i18n-easytier-zh-cn.ipk
 "
 # --- 下载函数 ---
 download_package() {
@@ -32,18 +36,27 @@ download_package() {
 
     local target_path="$TARGET_DIR/$filename"
 
-    # 如果文件已存在，跳过下载
-    if [ -f "$target_path" ]; then
-        echo "⏭️  文件已存在，跳过: $filename"
-        return 0
-    fi
+    # # 如果文件已存在，跳过下载
+    # if [ -f "$target_path" ]; then
+    #     echo "⏭️  文件已存在，跳过: $filename"
+    #     return 0
+    # fi
 
-    echo "⬇️  正在下载: $filename"
-    echo "   来自: $url"
+    # echo "⬇️  正在下载: $filename"
+    # echo "   来自: $url"
 
-    # 执行下载，使用 wget 的常用安全选项
-    if wget -q --show-progress --timeout=30 --tries=3 "$url" -O "$target_path"; then
-        echo "✅ 下载成功: $filename"
+    # # 执行下载，使用 wget 的常用安全选项
+    # if wget -q --show-progress --timeout=30 --tries=3 "$url" -O "$target_path"; then
+    #     echo "✅ 下载成功: $filename"
+    #     return 0
+    # else
+    #     echo "❌ 下载失败: $filename"
+    #     # 删除可能不完整的文件
+    #     rm -f "$target_path"
+    #     return 1
+    # fi
+    if wget -q -N --show-progress --timeout=30 --tries=3 "$url" -P "$TARGET_DIR"; then
+        echo "✅ 已确保文件最新: $filename"
         return 0
     else
         echo "❌ 下载失败: $filename"
