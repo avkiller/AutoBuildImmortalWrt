@@ -56,19 +56,19 @@ else
 fi
 
 # 自定义三方源
-echo "src/gz avkiller_homeproxy https://homeproxy.avkiller.top" >> /home/build/immortalwrt/repositories.conf
-echo "src/gz avkiller_easytier https://easytier-app.avkiller.top" >> /home/build/immortalwrt/repositories.conf
+echo "src/gz avkiller_homeproxy https://homeproxy.avkiller.top" >> repositories.conf
+echo "src/gz avkiller_easytier https://easytier-app.avkiller.top" >> repositories.conf
 
-# 手工下载
-curl -L -o Packages.gz \
-  -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
-  https://easytier-app.avkiller.top/Packages.gz
-gunzip -c Packages.gz > Packages
+# # 手工下载
+# curl -L -o Packages.gz \
+#   -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
+#   https://easytier-app.avkiller.top/Packages.gz
+# gunzip -c Packages.gz > Packages
 
-curl -L -o Packages.gz \
-  -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
-  https://homeproxy.avkiller.top/Packages.gz
-gunzip -c Packages.gz > Packages
+# curl -L -o Packages.gz \
+#   -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
+#   https://homeproxy.avkiller.top/Packages.gz
+# gunzip -c Packages.gz > Packages
 
 # 输出调试信息
 echo "$(date '+%Y-%m-%d %H:%M:%S') - 开始构建固件..."
