@@ -24,11 +24,11 @@ echo "cat pppoe-settings"
 cat /home/build/immortalwrt/files/etc/pppoe-settings
 
 # 创建自己编译的证书公钥
-mkdir -p /home/build/immortalwrt/files/etc/opkg/keys
-cat << EOF > /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
-untrusted comment: public key e6089a2eccd37d83
-RWTmCJouzNN9g/PA9Z/1AUswM7rzSDRb1HgWuvVrI3F+Cdxkz4YhCtTk
-EOF
+# mkdir -p /home/build/immortalwrt/files/etc/opkg/keys
+# cat << EOF > /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
+# untrusted comment: public key e6089a2eccd37d83
+# RWTmCJouzNN9g/PA9Z/1AUswM7rzSDRb1HgWuvVrI3F+Cdxkz4YhCtTk
+# EOF
 
 echo "cat 公钥证书"
 cat /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
@@ -82,9 +82,16 @@ fi
 #   https://homeproxy.avkiller.top/Packages.gz
 # gunzip -c Packages.gz > Packages
 
+echo "DEBUG rockchip: 输出工作目录文件列表信息"
+echo "DEBUG rockchip: immortalwrt WORK目录下文件列表"
+ls -al /home/build/immortalwrt/
+echo "DEBUG rockchip: immortalwrt WORK目录子文件夹"
+find /home/build/immortalwrt/ -type d
+
+
 # 输出调试信息
 echo "$(date '+%Y-%m-%d %H:%M:%S') - 开始构建固件..."
-echo "debug::查看repositories.conf信息——————"
+echo "DEBUG rockchip 查看repositories.conf信息——————"
 cat repositories.conf
 # 定义所需安装的包列表 下列插件你都可以自行删减
 PACKAGES=""

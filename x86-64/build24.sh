@@ -5,7 +5,7 @@ source shell/switch_repository.sh
 echo "第三方软件包: $CUSTOM_PACKAGES"
 LOGFILE="/tmp/uci-defaults-log.txt"
 echo "Starting 99-custom.sh at $(date)" >> $LOGFILE
-echo "编译固件大小为: $PROFILE MB"
+echo "编译固件大小为: $ROOTFS_SIZE MB"
 echo "Include Docker: $INCLUDE_DOCKER"
 
 echo "Create pppoe-settings"
@@ -22,11 +22,11 @@ echo "cat pppoe-settings"
 cat /home/build/immortalwrt/files/etc/pppoe-settings
 
 # 创建自己编译的证书公钥
-mkdir -p /home/build/immortalwrt/files/etc/opkg/keys
-cat << EOF > /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
-untrusted comment: public key e6089a2eccd37d83
-RWTmCJouzNN9g/PA9Z/1AUswM7rzSDRb1HgWuvVrI3F+Cdxkz4YhCtTk
-EOF
+# mkdir -p /home/build/immortalwrt/files/etc/opkg/keys
+# cat << EOF > /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
+# untrusted comment: public key e6089a2eccd37d83
+# RWTmCJouzNN9g/PA9Z/1AUswM7rzSDRb1HgWuvVrI3F+Cdxkz4YhCtTk
+# EOF
 echo "cat 公钥证书"
 cat /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
 ls -la /home/build/immortalwrt/files/etc/opkg/keys
