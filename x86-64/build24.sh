@@ -21,13 +21,18 @@ EOF
 echo "cat pppoe-settings"
 cat /home/build/immortalwrt/files/etc/pppoe-settings
 
-# 创建自己编译的证书公钥
-# mkdir -p /home/build/immortalwrt/files/etc/opkg/keys
-# cat << EOF > /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
-# untrusted comment: public key e6089a2eccd37d83
-# RWTmCJouzNN9g/PA9Z/1AUswM7rzSDRb1HgWuvVrI3F+Cdxkz4YhCtTk
-# EOF
-echo "cat 公钥证书"
+# 创建自定义临时编译的证书公钥
+mkdir -p /keys
+cat << EOF > /keys/e6089a2eccd37d83
+untrusted comment: public key e6089a2eccd37d83
+RWTmCJouzNN9g/PA9Z/1AUswM7rzSDRb1HgWuvVrI3F+Cdxkz4YhCtTk
+EOF
+
+echo "cat 临时公钥证书"
+cat /keys/e6089a2eccd37d83
+ls -la /keys
+
+echo "cat 内置公钥证书"
 cat /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
 ls -la /home/build/immortalwrt/files/etc/opkg/keys
 if [ -z "$CUSTOM_PACKAGES" ]; then
@@ -54,6 +59,10 @@ echo "DEBUG X86: immortalwrt WORK目录下文件列表"
 ls -al /home/build/immortalwrt/
 echo "DEBUG X86: immortalwrt WORK目录子文件夹"
 find /home/build/immortalwrt/ -type d
+
+# 自定义三方源
+echo "src/gz avkiller_homeproxy https://homeproxy.avkiller.top" >> repositories.conf
+echo "src/gz avkiller_easytier https://easytier-app.avkiller.top/x86_64" >> repositories.conf
 
 
 # 输出调试信息

@@ -24,13 +24,18 @@ echo "cat pppoe-settings"
 cat /home/build/immortalwrt/files/etc/pppoe-settings
 
 # 创建自己编译的证书公钥
-# mkdir -p /home/build/immortalwrt/files/etc/opkg/keys
-# cat << EOF > /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
-# untrusted comment: public key e6089a2eccd37d83
-# RWTmCJouzNN9g/PA9Z/1AUswM7rzSDRb1HgWuvVrI3F+Cdxkz4YhCtTk
-# EOF
+mkdir -p /keys
+cat << EOF > /keys/e6089a2eccd37d83
+untrusted comment: public key e6089a2eccd37d83
+RWTmCJouzNN9g/PA9Z/1AUswM7rzSDRb1HgWuvVrI3F+Cdxkz4YhCtTk
+EOF
 
-echo "cat 公钥证书"
+echo "cat 临时公钥证书"
+cat /keys/e6089a2eccd37d83
+ls -la /keys
+
+
+echo "cat 内置公钥证书"
 cat /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
 ls -la /home/build/immortalwrt/files/etc/opkg/keys
 
@@ -61,15 +66,15 @@ fi
 
 # 自定义三方源
 echo "src/gz avkiller_homeproxy https://homeproxy.avkiller.top" >> repositories.conf
-echo "src/gz avkiller_easytier https://easytier-app.avkiller.top" >> repositories.conf
-echo "关闭证书校验"
-if grep -q "^option check_signature" repositories.conf; then
-    # 如果存在，将其值修改为 0
-    sed -i 's/^option check_signature.*/option check_signature 0/' repositories.conf
-else
-    # 如果不存在，在文件末尾追加
-    echo "option check_signature 0" >> repositories.conf
-fi
+echo "src/gz avkiller_easytier https://easytier-app.avkiller.top/aarch64" >> repositories.conf
+# echo "关闭证书校验"
+# if grep -q "^option check_signature" repositories.conf; then
+#     # 如果存在，将其值修改为 0
+#     sed -i 's/^option check_signature.*/option check_signature 0/' repositories.conf
+# else
+#     # 如果不存在，在文件末尾追加
+#     echo "option check_signature 0" >> repositories.conf
+# fi
 
 # # 手工下载
 # curl -L -o Packages.gz \
