@@ -28,11 +28,17 @@ untrusted comment: public key e6089a2eccd37d83
 RWTmCJouzNN9g/PA9Z/1AUswM7rzSDRb1HgWuvVrI3F+Cdxkz4YhCtTk
 EOF
 
+
+# echo "cat /keys 临时公钥证书"
+# cp /keys/e6089a2eccd37d83 /build_dir/target-x86_64_musl/root-x86
+# ls -la /keys
+
+
 echo "cat 临时公钥证书"
 cat /keys/e6089a2eccd37d83
 ls -la /keys
 
-echo "cat 内置公钥证书"
+echo "cat /home/build/immortalwrt/files/etc/opkg/keys 内置公钥证书"
 cat /home/build/immortalwrt/files/etc/opkg/keys/e6089a2eccd37d83
 ls -la /home/build/immortalwrt/files/etc/opkg/keys
 if [ -z "$CUSTOM_PACKAGES" ]; then
@@ -60,6 +66,12 @@ ls -al /home/build/immortalwrt/
 echo "DEBUG X86: immortalwrt WORK目录子文件夹"
 find /home/build/immortalwrt/ -type d
 
+echo "DEBUG X86: immortalwrt 目录以及次级目录下文件"
+find /home/build/immortalwrt/ -maxdepth 2 -ls
+
+echo "DEBUG X86: immortalwrt build_dir目录以及次级目录下文件"
+find /home/build/immortalwrt/build_dir/target-x86_64_musl -ls
+
 # 自定义三方源
 echo "src/gz avkiller_homeproxy https://homeproxy.avkiller.top" >> repositories.conf
 echo "src/gz avkiller_easytier https://easytier-app.avkiller.top/x86_64" >> repositories.conf
@@ -75,8 +87,8 @@ PACKAGES="$PACKAGES curl"
 PACKAGES="$PACKAGES luci-i18n-diskman-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-firewall-zh-cn"
 PACKAGES="$PACKAGES luci-theme-argon"
-PACKAGES="$PACKAGES luci-app-argon-config"
-PACKAGES="$PACKAGES luci-i18n-argon-config-zh-cn"
+# PACKAGES="$PACKAGES luci-app-argon-config"
+# PACKAGES="$PACKAGES luci-i18n-argon-config-zh-cn"
 #24.10
 PACKAGES="$PACKAGES luci-i18n-package-manager-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-ttyd-zh-cn"
@@ -87,6 +99,10 @@ PACKAGES="$PACKAGES luci-i18n-filemanager-zh-cn"
 # 合并imm仓库以外的第三方插件
 PACKAGES="$PACKAGES $CUSTOM_PACKAGES"
 PACKAGES="$PACKAGES homeproxy-avkiller"
+PACKAGES="$PACKAGES kmod-tcp-bbr"
+PACKAGES="$PACKAGES ss"
+PACKAGES="$PACKAGES dufs"
+PACKAGES="$PACKAGES luci-app-dufs"
 
 
 # 判断是否需要编译 Docker 插件
