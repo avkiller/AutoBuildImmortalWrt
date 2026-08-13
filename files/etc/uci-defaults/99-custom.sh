@@ -287,6 +287,15 @@ else
     sed -i 's/^net\.ipv4\.tcp_congestion_control.*/net.ipv4.tcp_congestion_control = bbr/' /etc/sysctl.conf
 fi
 
+# 写入转发的规则
+cat << 'EOF' >> /etc/sysctl.conf
+
+# Disable ICMP send redirects
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
+net.ipv4.conf.br-lan.send_redirects = 0
+EOF
+
 # 3. 强制当前系统立即生效
 sysctl -p /etc/sysctl.conf >/dev/null 2>&1
 exit 0
