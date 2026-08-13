@@ -2,8 +2,10 @@ chain srcnat {
     # 1. 匹配目标端口
     meta l4proto { tcp, udp } th dport { 10085, 10086 } counter masquerade comment "RustDesk 端口"
     meta l4proto { tcp, udp } th dport { 34000 } counter masquerade comment "Kaadas 端口"
-    meta l4proto { tcp, udp } th dport { 8887, 9101, 50443, 50921 } counter masquerade comment "移动看家端口"
+    meta l4proto { tcp, udp } th dport { 8887, 9101, 50443, 50921, 9443, 2000 } counter masquerade comment "移动看家端口"
 
+    meta l4proto { tcp, udp } th dport { 5260, 5288, 5683, 19302, 8883, 5224, 8886, 7004, 8887, 5222} counter masquerade comment "疑似端口"
+    meta l4proto { tcp, udp } th dport { 9090, 996, 500, 11010, 58888, 53317} counter masquerade comment "本地的一些服务端口"
     # 2. Kaadas & RustDesk 节点 IP
     meta l4proto { tcp, udp } ip daddr { 120.76.73.193, 123.158.252.160 } masquerade comment "Kaadas 服务器"
     meta l4proto { tcp, udp } ip daddr { 119.28.81.142 } masquerade comment "RustDesk 服务器"
@@ -17,7 +19,7 @@ chain srcnat {
         39.185.58.0/24, 47.93.219.0/24, 59.82.113.0/24, 112.13.92.0/24,
         112.13.96.0/24, 112.13.168.0/24, 112.17.28.0/24, 111.1.57.0/24,
         119.3.230.0/24, 124.71.236.0/24, 183.230.40.0/24, 183.230.102.0/24,
-        221.178.45.0/24
+        221.178.45.0/24, 111.0.47.0/24, 45.141.171.0/24
     } masquerade comment "移动摄像头及其他业务 IP 段"
 
     # 4. IPv6 目标地址段

@@ -276,15 +276,17 @@ fi
 # 注意：如果模块未安装，modprobe 会失败，但不应影响脚本其他部分
 modprobe tcp_bbr 2>/dev/null
 
-# 2. 创建 BBR 的 sysctl 配置文件，确保持久化
-cat > /etc/sysctl.d/12-bbr.conf <<EOF
-net.ipv4.tcp_congestion_control=bbr
+# 2. 安全写入 /etc/sysctl.conf（带有去重判断，防止重复运行脚本时追加多行）
+if ! grep -q "net.ipv4.tcp_congestion_control" /etc/sysctl.conf; then
+    cat << 'EOF' >> /etc/sysctl.conf
+# BBR Congestion Control
+net.ipv4.tcp_congestion_control = bbr
 EOF
+else
+    # 如果已存在该配置，则直接替换为 bbr
+    sed -i 's/^net\.ipv4\.tcp_congestion_control.*/net.ipv4.tcp_congestion_control = bbr/' /etc/sysctl.conf
+fi
 
-# 3. 立即应用当前配置
-sysctl -p /etc/sysctl.d/12-bbr.conf >/dev/null 2>&1
-
-# 4. （可选）验证配置是否生效，可将结果重定向到日志文件以便排查
-sysctl net.ipv4.tcp_congestion_control > /root/bbr_check.log 2>&1
-
+# 3. 强制当前系统立即生效
+sysctl -p /etc/sysctl.conf >/dev/null 2>&1
 exit 0
