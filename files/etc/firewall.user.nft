@@ -29,4 +29,7 @@ chain srcnat {
         2409:8c28:202:1b::/64, 2409:8c28:2808:5::/64, 2409:8c60:2500:28::/64,
         2409:8c85:420:6a::/64
     } masquerade comment "移动摄像头 IPv6 业务网段"
+
+    # 5 匹配目标为 80, 443 的 TCP/UDP 流量，且经过 DNAT/TPROXY 转发的流量才做 masquerade
+    meta l4proto { tcp, udp } th dport { 80, 443 } ip daddr != 192.168.0.0/16 masquerade
 }
