@@ -1,0 +1,17 @@
+# 1. 默认规则：所有文本文件提交和检出时统统使用 Linux 风格 (LF)
+* text=auto eol=lf
+
+# 2. Windows 专属脚本：强制使用 Windows 风格 (CRLF)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# 3. 常见二进制文件：避免被 Git 误判为文本文件导致损坏
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar.gz binary
