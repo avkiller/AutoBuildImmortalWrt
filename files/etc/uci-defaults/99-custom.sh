@@ -189,8 +189,20 @@ fi
 
 # 修改默认的主机名
 uci set system.@system[0].hostname='Netgate'
+# 清空原有的 ntp_server 列表并写入新值
+uci del system.@system[0].ntp_server
+uci add_list system.@system[0].ntp_server='ntp.aliyun.com'
+uci add_list system.@system[0].ntp_server='ntp.tencent.com'
+uci add_list system.@system[0].ntp_server='ntp.ntsc.ac.cn'
+uci add_list system.@system[0].ntp_server='time.apple.com'
+
 # 2. 提交更改
 uci commit system
+# 修改默认的dns并发数
+uci set dhcp.@dnsmasq[0].dnsforwardmax='1000'
+uci commit dhcp
+
+
 # 设置编译作者信息
 FILE_PATH="/etc/openwrt_release"
 NEW_DESCRIPTION="Packaged by avkiller"
