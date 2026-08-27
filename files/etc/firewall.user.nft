@@ -1,11 +1,19 @@
+chain drop_icmp {
+    type filter hook output priority filter; policy accept;
+    ip protocol icmp icmp type redirect counter drop
+}
+
+
 chain srcnat {
     # 1. 匹配目标端口
     meta l4proto { tcp, udp } th dport { 10085, 10086 } counter masquerade comment "RustDesk 端口"
     meta l4proto { tcp, udp } th dport { 34000 } counter masquerade comment "Kaadas 端口"
     meta l4proto { tcp, udp } th dport { 8887, 9101, 50443, 50921, 9443, 2000 } counter masquerade comment "移动看家端口"
 
-    meta l4proto { tcp, udp } th dport { 5260, 5288, 5683, 19302, 8883, 5224, 8886, 7004, 8887, 5222} counter masquerade comment "疑似端口"
-    meta l4proto { tcp, udp } th dport { 9090, 996, 500, 11010, 58888, 53317} counter masquerade comment "本地的一些服务端口"
+    meta l4proto { tcp, udp } th dport { 5260, 5288, 5683, 19302, 8883, 8886, 8887} counter masquerade comment "疑似端口"
+    meta l4proto { tcp, udp } th dport { 5224, 7007, 5222, 7000, 7004} counter masquerade comment "米家端口"
+    # meta l4proto { tcp, udp } th dport { 21002, 19000, 21006} counter masquerade comment "米家端口"
+    #meta l4proto { tcp, udp } th dport { 9090, 996, 500, 11010, 58888, 53317} counter masquerade comment "本地的一些服务端口"
     # 2. Kaadas & RustDesk 节点 IP
     meta l4proto { tcp, udp } ip daddr { 120.76.73.193, 123.158.252.160 } masquerade comment "Kaadas 服务器"
     meta l4proto { tcp, udp } ip daddr { 119.28.81.142 } masquerade comment "RustDesk 服务器"
